@@ -3,60 +3,1560 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site</title>
+    <title>TNC Software | Enterprise Operations Engineering</title>
+    <meta name="description" content="TNC Software LLC delivers bespoke operational systems using AppSheet, Google Workspace, and Google Cloud Platform for operationally intensive industries.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        * {
+        /* ============================================
+           CSS VARIABLES - Brand Palette
+           ============================================ */
+        :root {
+            --navy-dark: #0d1b2a;
+            --navy: #1b3a5f;
+            --navy-light: #2d4a6f;
+            --crimson: #b91c1c;
+            --crimson-dark: #991b1b;
+            --white: #ffffff;
+            --off-white: #f8fafc;
+            --silver: #94a3b8;
+            --gold: #d69e2e;
+            --gold-light: #ecc94b;
+            
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Source Sans 3', sans-serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.7;
+            color: var(--navy-dark);
+            background: var(--off-white);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           GRID BACKGROUND PATTERN
+           ============================================ */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(var(--navy) 1px, transparent 1px),
+                linear-gradient(90deg, var(--navy) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--crimson);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 55px;
+            width: auto;
+        }
+
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-logo-text span {
+            color: var(--crimson);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--silver);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 0.75rem 1.25rem;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--crimson);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        /* Mobile Menu Toggle */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .nav-toggle span {
+            width: 28px;
+            height: 2px;
+            background: var(--white);
+            transition: var(--transition-smooth);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
+            overflow: hidden;
+        }
+
+        /* Animated circuit lines */
+        .hero-circuits {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: var(--gold);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .circuit-line.horizontal {
+            height: 1px;
+            width: 200px;
+        }
+
+        .circuit-line.vertical {
+            width: 1px;
+            height: 150px;
+        }
+
+        .circuit-line:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .circuit-line:nth-child(2) { top: 40%; right: 15%; animation-delay: 0.5s; }
+        .circuit-line:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 1s; }
+        .circuit-line:nth-child(4) { top: 60%; right: 25%; animation-delay: 1.5s; }
+        .circuit-line:nth-child(5) { bottom: 20%; right: 10%; animation-delay: 2s; }
+
+        .circuit-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: nodePulse 2s ease-in-out infinite;
+        }
+
+        .circuit-node:nth-child(6) { top: 20%; left: calc(10% + 200px); animation-delay: 0s; }
+        .circuit-node:nth-child(7) { top: 40%; right: calc(15% + 200px); animation-delay: 0.5s; }
+        .circuit-node:nth-child(8) { bottom: 30%; left: calc(20% + 200px); animation-delay: 1s; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* Stars decoration */
+        .hero-stars {
+            position: absolute;
+            top: 15%;
+            right: 5%;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .star {
+            width: 20px;
+            height: 20px;
+            fill: var(--crimson);
+            opacity: 0.6;
+            animation: starTwinkle 2s ease-in-out infinite;
+        }
+
+        .star:nth-child(2) { animation-delay: 0.3s; opacity: 0.8; }
+        .star:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes starTwinkle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--crimson);
+            display: block;
+        }
+
+        .hero-tagline {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-tagline::before,
+        .hero-tagline::after {
+            content: '';
+            width: 30px;
+            height: 2px;
+            background: var(--gold);
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--silver);
+            max-width: 540px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--crimson);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary:hover {
+            background: var(--crimson-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(185, 28, 28, 0.4);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--silver);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* Hero visual */
+        .hero-visual {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .container {
-            background: white;
-            padding: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+
+        .hero-logo-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+
+        .hero-logo-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1px solid rgba(214, 158, 46, 0.3);
+            animation: ringRotate 20s linear infinite;
+        }
+
+        .hero-logo-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-logo-ring:nth-child(2) {
+            width: 120%;
+            height: 120%;
+            animation-direction: reverse;
+            animation-duration: 25s;
+        }
+
+        .hero-logo-ring:nth-child(3) {
+            width: 140%;
+            height: 140%;
+            animation-duration: 30s;
+        }
+
+        @keyframes ringRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hero-logo-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(214, 158, 46, 0.3));
+        }
+
+        /* ============================================
+           SECTION COMMON STYLES
+           ============================================ */
+        .section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
             text-align: center;
-            max-width: 600px;
-            margin: 1rem;
+            margin-bottom: 4rem;
         }
-        h1 {
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--crimson);
+            text-transform: uppercase;
+            letter-spacing: 4px;
             margin-bottom: 1rem;
-            color: #667eea;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
         }
-        p {
+
+        .section-label::before,
+        .section-label::after {
+            content: '★';
+            font-size: 0.7rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--navy-dark);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .section-title span {
+            color: var(--crimson);
+        }
+
+        /* ============================================
+           MISSION SECTION
+           ============================================ */
+        .mission {
+            background: var(--white);
+        }
+
+        .mission-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .mission-text p {
+            font-size: 1.1rem;
+            color: var(--navy);
             margin-bottom: 1.5rem;
-            color: #666;
         }
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+
+        .mission-text p:first-of-type {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--navy-dark);
+        }
+
+        .mission-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--off-white);
+            padding: 2rem;
+            border-left: 4px solid var(--crimson);
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            transform: translateX(10px);
+            box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================
+           CAPABILITIES SECTION
+           ============================================ */
+        .capabilities {
+            background: linear-gradient(180deg, var(--navy-dark) 0%, var(--navy) 100%);
+            position: relative;
+        }
+
+        .capabilities .section-title {
+            color: var(--white);
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .capability-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .capability-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-smooth);
+        }
+
+        .capability-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .capability-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .capability-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+
+        .capability-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .capability-desc {
+            font-size: 0.95rem;
+            color: var(--silver);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           SYSTEMS SECTION
+           ============================================ */
+        .systems {
+            background: var(--white);
+        }
+
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .system-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--off-white);
+            border: 1px solid transparent;
+            transition: var(--transition-smooth);
+        }
+
+        .system-card:hover {
+            border-color: var(--crimson);
+            background: var(--white);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .system-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--navy-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .system-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .system-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--navy-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .system-content p {
+            font-size: 0.95rem;
+            color: var(--navy);
+        }
+
+        /* ============================================
+           DIFFERENCE SECTION
+           ============================================ */
+        .difference {
+            background: var(--off-white);
+            position: relative;
+        }
+
+        .difference-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .difference-principles {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .principle {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-left: 4px solid var(--navy-dark);
+            transition: var(--transition-smooth);
+        }
+
+        .principle:hover {
+            border-left-color: var(--crimson);
+            transform: translateX(10px);
+        }
+
+        .principle-icon {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: var(--navy-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .principle-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .principle-text {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--navy-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .difference-scenarios {
+            background: var(--navy-dark);
+            padding: 2.5rem;
+        }
+
+        .scenarios-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .scenarios-title::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--gold);
+        }
+
+        .scenario-list {
+            list-style: none;
+        }
+
+        .scenario-list li {
+            color: var(--silver);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .scenario-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--crimson);
+            font-weight: bold;
+        }
+
+        .scenario-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* ============================================
+           CONTACT SECTION
+           ============================================ */
+        .contact {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(185, 28, 28, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(214, 158, 46, 0.1) 0%, transparent 50%);
+        }
+
+        .contact .section-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact .section-title {
+            color: var(--white);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            color: var(--silver);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--white);
+        }
+
+        .contact-item svg {
+            width: 24px;
+            height: 24px;
+            color: var(--gold);
+        }
+
+        .contact-item a {
+            color: var(--white);
             text-decoration: none;
-            border-radius: 6px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: var(--transition-smooth);
         }
-        .btn:hover {
+
+        .contact-item a:hover {
+            color: var(--gold);
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--silver);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--crimson);
+            color: var(--white);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .form-submit:hover {
+            background: var(--crimson-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(185, 28, 28, 0.4);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: #060d14;
+            padding: 2rem;
+            text-align: center;
+            border-top: 3px solid var(--crimson);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer-logo img {
+            height: 40px;
+        }
+
+        .footer-logo span {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .footer-text {
+            color: var(--silver);
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ============================================
+           SCROLL ANIMATIONS
+           ============================================ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text {
+                order: 2;
+            }
+
+            .hero-visual {
+                order: 1;
+            }
+
+            .hero-tagline {
+                justify-content: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-logo-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .hero-logo-img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mission-content,
+            .difference-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .mission-stats {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--navy-dark);
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .capabilities-grid,
+            .systems-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-logo-container {
+                width: 220px;
+                height: 220px;
+            }
+
+            .hero-logo-img {
+                width: 160px;
+                height: 160px;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo-text {
+                font-size: 1.2rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .mission-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hello, World!</h1>
-        <p>My GitHub Pages site is live. Time to build something brilliant.</p>
-        <a href="https://github.com" class="btn">View on GitHub</a>
-    </div>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <img src="logo.png" alt="TNC Software Logo">
+                <span class="nav-logo-text">TNC <span>Software</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#capabilities">Capabilities</a></li>
+                <li><a href="#systems">Systems</a></li>
+                <li><a href="#difference">Difference</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-circuits">
+            <div class="circuit-line horizontal"></div>
+            <div class="circuit-line horizontal"></div>
+            <div class="circuit-line horizontal"></div>
+            <div class="circuit-line horizontal"></div>
+            <div class="circuit-line horizontal"></div>
+            <div class="circuit-node"></div>
+            <div class="circuit-node"></div>
+            <div class="circuit-node"></div>
+        </div>
+        <div class="hero-stars">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-tagline">Operations Engineering</p>
+                <h1>Build Systems<span>That Never Fail</span></h1>
+                <p class="hero-description">We architect bespoke operational platforms for industries where mistakes are expensive, resources cannot be double-allocated, and audit trails are non-negotiable. From Cash-in-Transit to field services — we turn operational chaos into deterministic systems.</p>
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary">
+                        Start Your Project
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#capabilities" class="btn btn-secondary">Explore Capabilities</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-logo-container">
+                    <div class="hero-logo-ring"></div>
+                    <div class="hero-logo-ring"></div>
+                    <div class="hero-logo-ring"></div>
+                    <img src="logo.png" alt="TNC Software" class="hero-logo-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section mission" id="mission">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Who We Are</p>
+                <h2 class="section-title">The Operational <span>Command Centre</span></h2>
+            </div>
+            <div class="mission-content">
+                <div class="mission-text fade-in">
+                    <p>TNC Software is a US-based cloud software consultancy specialising in AppSheet, Google Workspace, Apps Script, and Google Cloud Platform solutions for operationally intensive industries.</p>
+                    <p>We work directly with business leaders to translate contracts, operating procedures, and regulatory rules into executable system logic. Our strength lies in taking messy, high-risk, multi-step business processes and turning them into deterministic, auditable, and scalable systems.</p>
+                    <p>We're not a generic software house. We operate as solutions architects and systems engineers, working intimately with your operations, contracts, and regulatory constraints.</p>
+                </div>
+                <div class="mission-stats fade-in">
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Bespoke Solutions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">ERP</div>
+                        <div class="stat-label">Grade Platforms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">System Reliability</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">Zero</div>
+                        <div class="stat-label">Double Allocations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="section capabilities" id="capabilities">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">What We Do</p>
+                <h2 class="section-title">Engineering <span>Excellence</span></h2>
+            </div>
+            <div class="capabilities-grid">
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M9 9h6M9 12h6M9 15h4"/>
+                    </svg>
+                    <h3 class="capability-title">Full-Stack No-Code Architecture</h3>
+                    <p class="capability-desc">Architect complete operational systems using AppSheet, Apps Script, and Google Cloud — delivering ERP-grade functionality without traditional development overhead.</p>
+                </div>
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                    </svg>
+                    <h3 class="capability-title">Cross-System Integration</h3>
+                    <p class="capability-desc">API workflows, data pipelines, and real-time reporting dashboards that connect your entire operational ecosystem into a single source of truth.</p>
+                </div>
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    <h3 class="capability-title">Scalable Data Models</h3>
+                    <p class="capability-desc">Clean, future-proof data architectures designed to survive growth and structural change — no re-engineering when your business evolves.</p>
+                </div>
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                    <h3 class="capability-title">Audit-Ready Systems</h3>
+                    <p class="capability-desc">Every transaction logged. Every change tracked. Systems built for environments where compliance isn't optional and post-event analysis is required.</p>
+                </div>
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8M12 17v4"/>
+                        <path d="M6 8h.01M9 8h.01"/>
+                    </svg>
+                    <h3 class="capability-title">Operational Dashboards</h3>
+                    <p class="capability-desc">Real-time visibility of routes, assets, billing, risk exposure, and field performance. Turn your data into actionable intelligence.</p>
+                </div>
+                <div class="capability-card fade-in">
+                    <svg class="capability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <h3 class="capability-title">Long-Term Partnership</h3>
+                    <p class="capability-desc">We don't disappear after deployment. Full project lifecycles from discovery through optimisation and long-term support — we become your system custodian.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Systems Section -->
+    <section class="section systems" id="systems">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Proven Deployments</p>
+                <h2 class="section-title">Systems <span>We Build</span></h2>
+            </div>
+            <div class="systems-grid">
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="1" y="4" width="22" height="16" rx="2"/>
+                            <path d="M1 10h22"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Cash-in-Transit Operations</h3>
+                        <p>Complete CIT platforms managing routes, crews, vehicles, and high-value asset movements with full audit trails.</p>
+                    </div>
+                </div>
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Field Services Management</h3>
+                        <p>Scheduling, dispatch, compliance tracking, and real-time field reporting for service-based operations.</p>
+                    </div>
+                </div>
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Asset & Vehicle Tracking</h3>
+                        <p>Real-time allocation systems ensuring resources are never double-booked and always audit-ready.</p>
+                    </div>
+                </div>
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Logistics & Skip Hire</h3>
+                        <p>End-to-end operational platforms for logistics companies managing complex scheduling and billing.</p>
+                    </div>
+                </div>
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Security Operations</h3>
+                        <p>Personnel allocation, incident management, and compliance systems for security service providers.</p>
+                    </div>
+                </div>
+                <div class="system-card fade-in">
+                    <div class="system-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <div class="system-content">
+                        <h3>Maintenance & Inspections</h3>
+                        <p>Workflow engines for scheduled maintenance, water testing, compliance inspections, and service delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Difference Section -->
+    <section class="section difference" id="difference">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Why TNC</p>
+                <h2 class="section-title">The <span>TNC Difference</span></h2>
+            </div>
+            <div class="difference-content">
+                <div class="difference-principles">
+                    <div class="principle fade-in">
+                        <div class="principle-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <span class="principle-text">Correctness Over Shortcuts</span>
+                    </div>
+                    <div class="principle fade-in">
+                        <div class="principle-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <span class="principle-text">Deterministic Behaviour Over Clever Tricks</span>
+                    </div>
+                    <div class="principle fade-in">
+                        <div class="principle-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <span class="principle-text">Long-Term Maintainability Over Fast Hacks</span>
+                    </div>
+                    <div class="principle fade-in">
+                        <div class="principle-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <span class="principle-text">Contract-Aligned Logic Over Assumptions</span>
+                    </div>
+                    <div class="principle fade-in">
+                        <div class="principle-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <span class="principle-text">Clear Authority Hierarchies in Data & Rules</span>
+                    </div>
+                </div>
+                <div class="difference-scenarios fade-in">
+                    <h3 class="scenarios-title">We Excel When</h3>
+                    <ul class="scenario-list">
+                        <li>Mistakes are expensive or dangerous</li>
+                        <li>Resources must never be double-allocated</li>
+                        <li>Availability, sequencing, and conflict resolution matter</li>
+                        <li>Audits and post-event analysis are required</li>
+                        <li>Data structures change over time</li>
+                        <li>Off-the-shelf software doesn't fit your operation</li>
+                        <li>Excel and ad-hoc tools have become unmanageable</li>
+                        <li>You need operational certainty, not just reporting</li>
+                        <li>You're scaling and need systems that won't collapse</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Get In Touch</p>
+                <h2 class="section-title">Start Your <span>Transformation</span></h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <h3>Ready to Build Something That Works?</h3>
+                    <p>Whether you're drowning in spreadsheets, outgrowing your current systems, or need operational certainty in a high-stakes environment — we're here to engineer your solution.</p>
+                    <p>Every engagement starts with understanding your operation, your contracts, and your constraints. No templates. No assumptions. Just systems built precisely for how your business actually runs.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <a href="mailto:info@tnc-usa.com">info@tnc-usa.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>United States</span>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form fade-in" id="contactForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="company">Company</label>
+                        <input type="text" id="company" name="company" class="form-input" placeholder="Your Company Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="message">Tell Us About Your Operation</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Describe your current challenges and what you're looking to achieve..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="logo.png" alt="TNC Software">
+                <span>TNC Software LLC</span>
+            </div>
+            <p class="footer-text">© 2026 TNC Software LLC. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Form handling (placeholder - connect to your backend)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would typically send to your Google Apps Script web app
+            // For now, show a success message
+            alert('Thank you for your message! We\'ll be in touch soon.');
+            this.reset();
+        });
+
+        // Smooth scroll for Safari
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
